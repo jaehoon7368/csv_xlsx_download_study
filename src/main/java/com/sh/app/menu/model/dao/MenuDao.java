@@ -15,4 +15,12 @@ public interface MenuDao {
 
 	List<Menu> findByTypeTaste(String type, String taste);
 
+	Menu findById(long id);
+
+	int insertMenu(Menu menu);
+
+	int updateMenu(Menu menu);
+
+	int deleteMenu(long id);
+
 }

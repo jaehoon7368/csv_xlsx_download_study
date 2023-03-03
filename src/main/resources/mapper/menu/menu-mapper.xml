@@ -37,4 +37,52 @@
 			</if>
 		</where>
 	</select>
+	
+	<select id="findById" resultMap="menuMap">
+		select
+			*
+		from
+			menu
+		where
+			id = #{id}
+	</select>
+	
+	<insert id="insertMenu">
+		insert into
+			menu
+		values(
+			seq_menu_id.nextval,
+			#{restaurant},
+			#{name},
+			#{price},
+			#{type},
+			#{taste}
+		)
+	<selectKey order="AFTER" resultType="_int" keyProperty="id">
+			select
+				seq_menu_id.currval
+			from
+				dual
+	</selectKey>
+	</insert>
+	
+	<update id="updateMenu">
+		update
+			menu
+		set
+			restaurant = #{restaurant},
+			name = #{name},
+			price = #{price},
+			type = #{type},
+			taste = #{taste}
+		where
+			id = #{id}
+	</update>
+	
+	<delete id="deleteMenu">
+		delete
+			menu
+		where
+			id = #{id}
+	</delete>
 </mapper>

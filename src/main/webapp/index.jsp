@@ -122,8 +122,187 @@
 	    	});
 	    });
 	    </script>
-	</div>
+	  
+	   <!-- POST /menu -->
+	    <div class="menu-test">
+	        <h4>메뉴 등록하기(POST)</h4>
+	        <form name="menuEnrollFrm">
+	            <input type="text" name="restaurant" placeholder="음식점" class="form-control" required/>
+	            <br />
+	            <input type="text" name="name" placeholder="메뉴" class="form-control" required/>
+	            <br />
+	            <input type="number" name="price" placeholder="가격" class="form-control" required/>
+	            <br />
+	            <div class="form-check form-check-inline">
+	                <input type="radio" class="form-check-input" name="type" id="post-kr" value="kr" checked>
+	                <label for="post-kr" class="form-check-label">한식</label>&nbsp;
+	                <input type="radio" class="form-check-input" name="type" id="post-ch" value="ch">
+	                <label for="post-ch" class="form-check-label">중식</label>&nbsp;
+	                <input type="radio" class="form-check-input" name="type" id="post-jp" value="jp">
+	                <label for="post-jp" class="form-check-label">일식</label>&nbsp;
+	            </div>
+	            <br />
+	            <div class="form-check form-check-inline">
+	                <input type="radio" class="form-check-input" name="taste" id="post-hot" value="hot" checked>
+	                <label for="post-hot" class="form-check-label">매운맛</label>&nbsp;
+	                <input type="radio" class="form-check-input" name="taste" id="post-mild" value="mild">
+	                <label for="post-mild" class="form-check-label">순한맛</label>
+	            </div>
+	            <br />
+	            <input type="submit" class="btn btn-block btn-outline-success btn-send" value="등록" >
+	        </form>
+	    </div>
+	    <script>
+	    document.menuEnrollFrm.addEventListener('submit',(e)=>{
+	    	e.preventDefault();
+	    	
+	    	const menu = {
+	    		restaurant : e.target.restaurant.value,
+	    		name : e.target.name.value,
+	    		price : e.target.price.value,
+	    		type : e.target.type.value,
+	    		taste : e.target.taste.value
+	    	};
+	    	console.log(menu);
+	    	
+	    	$.ajax({
+	    		url : '${pageContext.request.contextPath}/menu',
+	    		//data : menu, //직렬화 restaurant=두리순대국&name=순대국(특)&price=30000
+	    		data : JSON.stringify(menu),
+	    		method : "POST",
+	    		contentType : "application/json; charset=utf-8", //[org.springframework.web.HttpMediaTypeNotSupportedException: Content type 'application/x-www-form-urlencoded;charset=UTF-8' not supported]
+	    		success(data,textStatus,jqxhr){
+	    			console.log(data,textStatus,jqxhr);
+	    			const location = jqxhr.getResponseHeader('Location');
+	    			console.log(location);
+	    		},
+	    		error : console.log,
+	    		complete(){
+	    			e.target.reset();
+	    		}
+	    	});
+	    });
+	    </script>
+	    
+	    <!-- #3.PUT -->
+		<div class="menu-test">
+			<h4>메뉴 수정하기(PUT)</h4>
+			<p>메뉴번호를 사용해 해당메뉴정보를 수정함.</p>
+			<form id="menuSearchFrm" name="menuSearchFrm">
+				<input type="text" name="id" placeholder="메뉴번호" class="form-control" /><br />
+				<input type="submit" class="btn btn-block btn-outline-primary btn-send" value="검색" >
+			</form>
+		
+			<hr />
+			<form id="menuUpdateFrm" name="menuUpdateFrm">
+				<!-- where조건절에 사용할 id를 담아둠 -->
+				<input type="hidden" name="id" />
+				<input type="text" name="restaurant" placeholder="음식점" class="form-control" />
+				<br />
+				<input type="text" name="name" placeholder="메뉴" class="form-control" />
+				<br />
+				<input type="number" name="price" placeholder="가격" step="1000" class="form-control" />
+				<br />
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" name="type" id="put-kr" value="kr" checked>
+					<label for="put-kr" class="form-check-label">한식</label>&nbsp;
+					<input type="radio" class="form-check-input" name="type" id="put-ch" value="ch">
+					<label for="put-ch" class="form-check-label">중식</label>&nbsp;
+					<input type="radio" class="form-check-input" name="type" id="put-jp" value="jp">
+					<label for="put-jp" class="form-check-label">일식</label>&nbsp;
+				</div>
+				<br />
+				<div class="form-check form-check-inline">
+					<input type="radio" class="form-check-input" name="taste" id="put-hot" value="hot" checked>
+					<label for="put-hot" class="form-check-label">매운맛</label>&nbsp;
+					<input type="radio" class="form-check-input" name="taste" id="put-mild" value="mild">
+					<label for="put-mild" class="form-check-label">순한맛</label>
+				</div>
+				<br />
+				<input type="submit" class="btn btn-block btn-outline-success btn-send" value="수정" >
+			</form>
+		</div>
+		<script>
+		document.menuSearchFrm.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			const id = document.querySelector("[name=id]").value;
+			findById(id);
+		});
+		
+		document.menuUpdateFrm.addEventListener('submit',(e)=>{
+			e.preventDefault();
+			
+			const frmData = new FormData(e.target);
+			const menu = {};
+			frmData.forEach((value, key)=>{
+				menu[key] = value;
+			});
+			console.log(JSON.stringify(menu));
+			
+			$.ajax({
+				url : '${pageContext.request.contextPath}/menu',
+				method : "PUT",
+				data : JSON.stringify(menu),
+				contentType : 'application/json; charset=utf-8',
+				success(data){
+					console.log(data);
+				},
+				error : console.log
+			});
+		});
+		</script>
+		
+		<!-- DELETE /menu/10 -->
+		<div class="menu-test">
+	        <h4>메뉴 삭제하기(DELETE)</h4>
+	        <p>메뉴번호를 사용해 해당메뉴정보를 삭제함.</p>
+	        <form id="menuDeleteFrm" name="menuDeleteFrm">
+	            <input type="text" name="id" placeholder="메뉴번호" class="form-control" /><br />
+	            <input type="submit" class="btn btn-block btn-outline-danger btn-send" value="삭제" >
+	        </form>
+	    </div>
+	    <script>
+	    document.menuDeleteFrm.addEventListener('submit',(e)=>{
+	    	e.preventDefault();
+	    		
+	    	$.ajax({
+	    		url : `${pageContext.request.contextPath}/menu/\${e.target.id.value}`,
+	    		method : "DELETE",
+	    		success(data){
+	    			console.log(data); 
+	    		},
+	    		error : console.log
+	    	})	
+	    });
+	    </script>
+	    
+</div> <!-- end of #menu-container -->
 <script>
+const findById = (id) =>{
+	console.log(id);
+	
+	$.ajax({
+		url : `${pageContext.request.contextPath}/menu/\${id}`,
+		method : "GET",
+		success(data){
+			console.log(data);
+			const frm = document.menuUpdateFrm;
+			const {id, restaurant,name,price,type,taste} = data;
+			frm.id.value = id;
+			frm.restaurant.value = restaurant;
+			frm.name.value = name;
+			frm.price.value = price;
+			frm.type.value = type;
+			frm.taste.value = taste;
+		},
+		error(jqxhr,textStatus,err){
+			console.log(jqxhr,textStatus,err);
+			if(jqxhr.status == 404){
+				alert("조회한 메뉴는 존제하지 않습니다.");
+			}
+		}
+	});
+};
 /**
  * selector하위에 메뉴테이블을 생성
  * ------------------------------
@@ -155,8 +334,8 @@ const renderMenuTable = (selector,data)=>{
 		data.forEach((menu) =>{
 			const {id, restaurant,name,price,type,taste} = menu;
 			html +=`
-				<tr>
-					<td>\${id}</td>
+				<tr data-id="\${id}">
+					<td><a href="javascript:findById('\${id}')">\${id}</a></td>
 					<td>\${restaurant}</td>
 					<td>\${name}</td>
 					<td>₩\${price.toLocaleString()}</td>
@@ -175,6 +354,6 @@ const renderMenuTable = (selector,data)=>{
 	</table>
 	`;
 	container.innerHTML = html;
-}
+};
 </script>
 <jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>

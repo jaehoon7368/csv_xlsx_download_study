@@ -28,4 +28,24 @@ public class MenuServiceImpl implements MenuService {
 	public List<Menu> findByTypeTaste(String type, String taste) {
 		return menuDao.findByTypeTaste(type,taste);
 	}
+	
+	@Override
+	public Menu findById(long id) {
+		return menuDao.findById(id);
+	}
+	
+	@Override
+	public int insertMenu(Menu menu) {
+		return menuDao.insertMenu(menu);
+	}
+	
+	@Override
+	public int updateMenu(Menu menu) {
+		return menuDao.updateMenu(menu);
+	}
+	
+	@Override
+	public int deleteMenu(long id) {
+		return menuDao.deleteMenu(id);
+	}
 }
