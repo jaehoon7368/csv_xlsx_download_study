@@ -1,4 +1,4 @@
-package com.sh.app;
+package com.sh.pinshot;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

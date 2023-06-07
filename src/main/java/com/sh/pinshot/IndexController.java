@@ -1,4 +1,4 @@
-package com.sh.app;
+package com.sh.pinshot;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @Slf4j
-public class HelloSpringbootController {
+public class IndexController {
 	
 	@GetMapping("/")
 	public String home() {
@@ -16,9 +16,4 @@ public class HelloSpringbootController {
 		return "forward:/index.jsp";
 	}
 	
-	@GetMapping("/foo/foo")
-	public String foo(Model model) {
-		model.addAttribute("tel", "01012341234");
-		return "foo/foo";
-	}
 }

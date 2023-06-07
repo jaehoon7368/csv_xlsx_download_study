@@ -1,14 +1,9 @@
-#server.servlet.context-path=/app
 server:
   servlet:
-    context-path: /app
+    context-path: 
   port : 10000
-  
-logging:
-  level:
-    '[com.sh.app]' : debug
-    
-# jsp를 view단으로 사용하는 경우
+     
+
 spring:
   mvc:
     view:
@@ -16,15 +11,15 @@ spring:
       suffix: .jsp
   datasource:
     driver-class-name: oracle.jdbc.OracleDriver
-    url: jdbc:oracle:thin:@localhost:1521:xe
-    username: spring
-    password: spring
+    url: jdbc:oracle:thin:@CRFJN9KBN0THKE3B_high?TNS_ADMIN=/Users/jaehoon/dev/Wallet_CRFJN9KBN0THKE3B
+    username: admin
+    password: Qazqaz7368!!
     
 mybatis:
   configuration:
     jdbc-type-for-null: NULL
     map-underscore-to-camel-case: true
-  type-aliases-package: com.sh.app.menu
+  type-aliases-package: com.sh.pinshot
   mapper-locations:
   - classpath*:mapper/**/*-mapper.xml 
    
